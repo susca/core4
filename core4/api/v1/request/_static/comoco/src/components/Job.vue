@@ -25,10 +25,15 @@
       </v-layout>
     </div>
 
+<!--    <v-progress-linear v-if="job.state === 'running'"-->
+<!--      color="#64a505"-->
+<!--      height="2"-->
+<!--      value="[job.prog.value]">-->
+<!--    </v-progress-linear>-->
     <v-progress-linear v-if="job.state === 'running'"
-      color="#64a505"
-      height="2"
-      value="30">
+                       color="#64a505"
+                       height="2"
+                       :value="job.progress * 100">
     </v-progress-linear>
   </div>
 </template>
