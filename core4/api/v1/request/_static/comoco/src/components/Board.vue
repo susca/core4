@@ -1,10 +1,16 @@
 <template>
   <v-container class="board">
-    <board-header :name="name" :states="states"></board-header>
+
+    <!-- Group info (counter all of jobs with the same states) -->
+    <info :name="name" :states="states"></info>
+
     <v-layout column class="jobs">
+
+      <!-- list of all jobs which belongs to this group -->
       <v-flex v-for="(job, index) in getJobsByGroupName(name)" :key="index">
         <job :flags="flags" :job="job"></job>
       </v-flex>
+
     </v-layout>
   </v-container>
 </template>
@@ -13,14 +19,37 @@
 import { mapGetters } from 'vuex'
 
 import Job from '@/components/Job'
-import BoardHeader from '@/components/BoardHeader'
+import Info from '@/components/Info'
 
 export default {
-  name: 'jobsBoard',
+  name: 'board',
   components: {
-    Job, BoardHeader
+    Job, Info
   },
-  props: ['name', 'states', 'flags'],
+  props: {
+    /**
+     * Jobs group name
+     */
+    name: {
+      type: [String],
+      required: true,
+      default: 'Other'
+    },
+    /**
+     * Possible flags for job, needed for "Job" component
+     */
+    flags: {
+      type: [Object],
+      required: false
+    },
+    /**
+     * All job states which belongs to this group, need for "Info" component
+     */
+    states: {
+      type: [Array],
+      required: true
+    }
+  },
   computed: {
     ...mapGetters(['getJobsByGroupName'])
   },
@@ -29,7 +58,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../assets/comoco';
+@import '../style/comoco';
 
 $scrollbar-track: #4A4A4A;
 $scrollbar-thumb: #5C5C5C;
@@ -69,7 +98,7 @@ $scrollbar-thumb-hover: #737373;
 */
 @media (min-width: 1281px)and (max-width: 1904px) {
   .jobs {
-    max-height: calc(100vh - 620px);
+    max-height: calc(100vh - 220px); /* -620px size with chart */
   }
 }
 
@@ -79,7 +108,7 @@ $scrollbar-thumb-hover: #737373;
 */
 @media (min-width: 1281px)and (max-width: 1904px) {
   .jobs {
-    max-height: calc(100vh - 620px);
+    max-height: calc(100vh - 220px); /* -620px size with chart */
   }
 }
 
@@ -89,7 +118,7 @@ $scrollbar-thumb-hover: #737373;
 */
 @media (min-width: 960px) and (max-width: 1264px) {
   .jobs {
-    max-height: calc(100vh - 620px);
+    max-height: calc(100vh - 220px); /* -620px size with chart */
   }
 }
 

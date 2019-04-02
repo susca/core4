@@ -12,15 +12,7 @@
 <script>
 import SideNavigation from '@/components/SideNavigation'
 import { mapGetters } from 'vuex'
-
-const getBasePath = () => {
-  if (window.location.href.includes('http')) {
-    // index.html
-    return window.APIBASE_CORE.replace('http:', 'ws:')
-  }
-
-  return `ws://${window.location.hostname}${window.APIBASE_CORE}`
-}
+import { getBasePath } from './helper'
 
 const WS_BASE_PATH = getBasePath()
 
@@ -34,6 +26,8 @@ export default {
   },
   watch: {
     authenticated (newValue, oldValue) {
+      // ToDo: check login/logout behavior
+
       if (newValue && newValue !== oldValue) {
         this.$disconnect()
 

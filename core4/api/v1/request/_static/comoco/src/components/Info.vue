@@ -2,12 +2,12 @@
   <v-layout column xs12 class="board-header mb-3">
     <v-flex xs12>
       <v-layout row xs12>
-        <v-flex v-for="(state, index) in states" class="board-groups"
-                :key="index"
-                :class="`state-${state}`">
+
+        <!-- Iterate for all states which belongs to the group and display amount of all jobs with this state  -->
+        <v-flex v-for="(state, index) in states" :key="index" :class="`state-${state}`" class="board-groups">
           <v-layout row xs12 class="text-truncate pa-1">
             <v-flex xs10>
-              <span class="font-weight-bold grey--text">{{ state }}:</span>
+              <span class="font-weight-bold grey--text">{{ state }}</span>
             </v-flex>
             <v-flex class="text-right" xs2>
               <span class="font-weight-bold grey--text">{{ getStateCounter([state]) }}</span>
@@ -17,6 +17,7 @@
       </v-layout>
     </v-flex>
 
+    <!-- Display the group name and amount of all jobs which belongs to this group  -->
     <v-flex xs12>
       <v-layout row xs12 pa-1>
         <v-flex xs10>
@@ -35,7 +36,22 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'board-header',
-  props: ['name', 'states'],
+  props: {
+    /**
+     * Jobs group name
+     */
+    name: {
+      type: [String],
+      required: true
+    },
+    /**
+     * All job states which belongs to the group, use in loop
+     */
+    states: {
+      type: [Array],
+      required: true
+    }
+  },
   computed: {
     ...mapGetters(['getStateCounter'])
   }
@@ -43,7 +59,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../assets/comoco';
+@import '../style/comoco';
 
 .board-header{
   background-color:  #282828;

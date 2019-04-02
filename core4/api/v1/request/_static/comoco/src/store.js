@@ -3,18 +3,16 @@ import Vuex from 'vuex'
 import createLogger from 'vuex/dist/logger'
 
 import { clone } from 'pnbi-base/core4/helper'
-import { objectWithDefaults } from './helper'
+import { createObjectWithDefaultValues } from './helper'
 
-import { jobStateDictionary, jobGroups } from './settings.js'
+import { jobStates, jobGroups } from './settings.js'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   plugins: [createLogger()],
   state: {
-    queue: {
-
-    },
+    queue: {},
     socket: {
       isConnected: false,
       message: '',
@@ -32,14 +30,16 @@ export default new Vuex.Store({
       state.socket.isConnected = false
     },
     SOCKET_ONERROR (state, event) {
+      // ToDo: try reconnection 5 times then provide an error message
       console.error(state, event)
     },
     // default handler called for all methods
     SOCKET_ONMESSAGE (state, message) {
       state.socket.message = message
 
+      // summary - ws type notification (all jobs in queue)
       if (message.name === 'summary') {
-        state.queue = normalizeData(message.data, 'state')
+        state.queue = groupDataAndJobStat(message.data, 'state')
       }
     },
     // mutations for reconnect methods
@@ -51,7 +51,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    ...mapGettersJob(jobGroups),
+    ...mapGettersJobGroups(jobGroups),
     getJobsByGroupName: (state, getters) => (groupName) => {
       return getters[groupName]
     },
@@ -72,12 +72,15 @@ export default new Vuex.Store({
 // ================================================================= //
 
 /**
+ * Getter(s) for job(s) group from store
  *
- * @param {array} arr
+ * @param {array} arr -  group(s)
+ *                       e.g. ['waiting', 'running', 'stopped']
  *
- * @returns {*}
+ * @returns {object} - object with key - group name, value - getter function
+ *                     e.g. {'running': (state) => f, ...}
  */
-function mapGettersJob (arr) {
+function mapGettersJobGroups (arr) {
   return arr.reduce((computedResult, currentItem) => {
     computedResult[currentItem] = (state) => {
       return clone(state.queue[currentItem] || [])
@@ -88,24 +91,27 @@ function mapGettersJob (arr) {
 }
 
 /**
+ * Assort array of all jobs in groups + get job statistic
  *
- * @param {array} arr
- * @param {string} jobKey
+ * @param {array} arr - array of all jobs
+ * @param {string} groupingKey - job object key by which we will do grouping
  *
- * @returns {object}
+ * @returns {object} - grouped jobs object
+ *                     e. g. {'stat': {'waiting': 5, ...}, 'running': [<job>, ..., <job>], ...}
  */
-function normalizeData (arr, jobKey) {
-  let jobs = {}
-  let stat = objectWithDefaults(jobStateDictionary)
+// ToDo: elegant decouple group data and job statistic
+function groupDataAndJobStat (arr, groupingKey) {
+  let groupsDict = {}
+  let initialState = createObjectWithDefaultValues(jobStates)
 
   arr.forEach((job) => {
-    let jobState = job[jobKey]
-    let key = jobStateDictionary[jobState] || 'other';
+    let jobState = job[groupingKey]
+    let group = jobStates[jobState] || 'other';
 
-    (jobs[key] = jobs[key] || []).push(job)
+    (groupsDict[group] = groupsDict[group] || []).push(job)
 
-    stat[jobState] += job['n']
+    initialState[jobState] += job['n']
   })
 
-  return { 'stat': stat, ...jobs }
+  return { 'stat': initialState, ...groupsDict }
 }

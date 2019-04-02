@@ -2,8 +2,10 @@
   <div>
     <div class="job mt-1 pa-1" :class="`job-${job.state}`">
       <v-layout column xs12>
+        <!-- Job account name -->
         <v-flex class="caption">{{ job.name | accountName }}</v-flex>
 
+        <!-- Job name and amount of jobs with the same name on queue-->
         <v-flex>
           <v-layout row xs12>
             <v-flex xs10 class="text-truncate">
@@ -15,6 +17,7 @@
           </v-layout>
         </v-flex>
 
+        <!-- Existing job flags-->
         <v-flex class="align-right caption">
           <span v-for="(icon, flag) in flags" class="text-uppercase font-weight-bold text--darken-3"
                 :key="flag"
@@ -25,23 +28,34 @@
       </v-layout>
     </div>
 
+    <!-- Job progress bar in %, available only for running jobs -->
 <!--    <v-progress-linear v-if="job.state === 'running'"-->
-<!--      color="#64a505"-->
-<!--      height="2"-->
-<!--      value="[job.prog.value]">-->
+<!--                       color="#64a505"-->
+<!--                       height="2"-->
+<!--                       :value="job.progress * 100">-->
 <!--    </v-progress-linear>-->
-    <v-progress-linear v-if="job.state === 'running'"
-                       color="#64a505"
-                       height="2"
-                       :value="job.progress * 100">
-    </v-progress-linear>
   </div>
 </template>
 
 <script>
 export default {
   name: 'job',
-  props: ['job', 'flags'],
+  props: {
+    /**
+     * Job object
+     */
+    job: {
+      type: [Object],
+      required: true
+    },
+    /**
+     * Possible flags for job, needed for "Job" component
+     */
+    flags: {
+      type: [Object],
+      required: false
+    }
+  },
   filters: {
     shortName: value => value.split('.').slice(-1)[0],
     accountName: value => value.split('.')[2]
@@ -50,7 +64,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../assets/comoco';
+@import '../style/comoco';
 
 .align-right{
   align-self: flex-end;

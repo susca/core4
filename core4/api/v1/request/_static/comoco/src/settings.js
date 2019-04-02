@@ -1,8 +1,8 @@
 /**
- * ToDo: add file description
+ * General jobs config. Existing job states, existing job flags, existing job groups
  */
 
-const jobStateDictionary = {
+const jobStates = {
   pending: 'waiting',
   deferred: 'waiting',
   failed: 'waiting',
@@ -29,7 +29,7 @@ const jobFlags = {
  * @returns {object} - dictionary
  *          e.g. {<jobs group>: [<job state>, ..., <job state>]}
  */
-const statesByGroup = (function (states) {
+const groupsJobsByStates = (function (states) {
   let result = {}
 
   for (let key in states) {
@@ -37,14 +37,14 @@ const statesByGroup = (function (states) {
   }
 
   return result
-}(jobStateDictionary))
+}(jobStates))
 
 // Array of all existing job groups ['waiting', 'running', 'stopped']
-const jobGroups = Object.keys(statesByGroup)
+const jobGroups = Object.keys(groupsJobsByStates)
 
 export {
-  jobStateDictionary,
+  groupsJobsByStates,
+  jobStates,
   jobGroups,
-  statesByGroup,
   jobFlags
 }
