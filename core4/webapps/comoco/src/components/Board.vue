@@ -97,11 +97,11 @@ export default {
 */
 @media (min-width: 1904px) {
   .jobs {
-    max-height: calc(100vh - 548px);
+    max-height: calc(100vh - 127px);
   }
 
   .board {
-    height: calc(100vh - 435px);
+    height: calc(100vh - 16px);
   }
 }
 
@@ -111,11 +111,11 @@ export default {
 */
 @media (min-width: 1281px)and (max-width: 1904px) {
   .jobs {
-    max-height: calc(100vh - 548px);
+    max-height: calc(100vh - 127px);
   }
 
   .board {
-    height: calc(100vh - 435px);
+    height: calc(100vh - 16px);
   }
 }
 
@@ -125,11 +125,11 @@ export default {
 */
 @media (min-width: 960px) and (max-width: 1264px) {
   .jobs {
-    max-height: calc(100vh - 548px);
+    max-height: calc(100vh - 127px);
   }
 
   .board {
-    height: calc(100vh - 435px);
+    height: calc(100vh - 16px);
   }
 }
 
@@ -139,7 +139,7 @@ export default {
 */
 @media (min-width: 600px) and (max-width: 960px) {
   .jobs {
-    max-height: calc(100vh - 236px);
+    max-height: calc(100vh - 127px);
   }
 
   .board {
@@ -153,7 +153,7 @@ export default {
 */
 @media (max-width: 600px) {
   .jobs {
-    max-height: calc(100vh - 236px);
+    max-height: calc(100vh - 127px);
   }
 
   .board {

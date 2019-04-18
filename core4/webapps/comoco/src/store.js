@@ -56,9 +56,9 @@ export default new Vuex.Store({
   },
   getters: {
     ...mapGettersJobGroups(jobGroups),
-    getChartData: (state) => {
-      return state.queue.stat
-    },
+    // getChartData: (state) => {
+    //   return state.queue.stat
+    // },
     getJobsByGroupName: (state, getters) => (groupName) => {
       return getters[groupName]
     },
