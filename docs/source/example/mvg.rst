@@ -26,9 +26,9 @@ the core job
 The following code is sort of the most minimal version of a job. Given the
 class resides in a file ``meetup/job.py`` and the job's ``qual_name`` is
 ``meetup.job.MyJob`` you enqueue the job with
-``coco --enqueue meetup.job.Myjob``. Start a worker with ``coco --worker`` to
+``coco --enqueue meetup.job.MyJob``. Start a worker with ``coco --worker`` to
 run the job. Use ``chist`` to see the job's "hello world" greeting. Use
-``coco --detail meetup.job.Myjob`` to see the job's "good-bye" output.
+``coco --detail meetup.job.MyJob`` to see the job's "good-bye" output.
 
 .. code-block:: python
 
