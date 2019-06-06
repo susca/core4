@@ -65,13 +65,13 @@ Start a core4 worker with::
 
 In a second console start core4 application server with::
 
-    coco --app
+    coco --application
 
 
 Visit the core4 landing page, look around at http://`hostname`:5001 and start a
 job in a third console with::
 
-    coco -enqueue core4.queue.helper.job.example.DummyJob sleep=30
+    coco --enqueue core4.queue.helper.job.example.DummyJob sleep=30
 
 
 **What's next:**
